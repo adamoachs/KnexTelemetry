@@ -1,4 +1,3 @@
-#pragma once
 #ifndef KnexTelemetryClient_h
 #define KnexTelemetryClient_h
 
@@ -6,28 +5,27 @@
 #include <WiFi.h>
 #include <ArduinoHttpClient.h>
 
+using namespace std;
+
 class KnexTelemetryClient 
 {
     public:
-        int WifiStatus();
-        //Default constructor; reading settings from KnexTelemetryClient.json file
-        KnexTelemetryClient();
+        //public fields
 
-        //Alternative constructor; explicitly provide settings
-        KnexTelemetryClient(String baseUrl, String accessToken, String wifi_ssid, String wifi_password);
+        //public methods
+        KnexTelemetryClient(); 
+        void SendSensorValue(string sensorName, string sensorValue);
 
     private:
-        String _baseUrl;
-        String _accessToken;
-        String _wifi_ssid;
-        String _wifi_password;
+        //private fields
         int _wifiStatus;
         WiFiClient _wifiClient;
 
+        //private methods
         void WiFiInit();
-        void HttpRequest(String method, String url, String body);
-        void GET(String path);
-        void POST(String path, String body);
+        void HttpRequest(string method, string url, string body);
+        void GET(string path);
+        void POST(string path, string body);
 };
 
-#endif
+#endif //KnexTelemetryClient_h

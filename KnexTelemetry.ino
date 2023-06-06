@@ -1,10 +1,18 @@
 #include <arduino.h>
 #include "KnexTelemetryClient.h"
 
+using namespace std;
+
+KnexTelemetryClient client;
+
 void setup() {
-  KnexTelemetryClient client("http://192.168.86.22/knextest", "token", "No Sneps Allows", "pandasonly");
+
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+    client.SendSensorValue("test-sensor-0", (char*)analogRead(0));
+    client.SendSensorValue("test-sensor-1", (char*)analogRead(1));
+    client.SendSensorValue("test-sensor-2", (char*)analogRead(2));
+    
+    delay(2000);
 }
