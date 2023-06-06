@@ -2,6 +2,13 @@
 
 #include "KnexTelemetryClient.h"
 #include "config.h"
+/*
+    define in config.h:
+    DOMAIN          domain name of api server
+    ACCESS_TOKEN    access token for api
+    WIFI_SSID       wifi ssid
+    WIFI_PASSWORD   wifi password
+*/
 
 using namespace std;
 
