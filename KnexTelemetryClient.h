@@ -3,7 +3,6 @@
 
 #include <arduino.h>
 #include <WiFi.h>
-#include <ArduinoHttpClient.h>
 
 using namespace std;
 
