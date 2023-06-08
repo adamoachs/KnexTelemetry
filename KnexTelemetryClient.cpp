@@ -1,9 +1,9 @@
 //references: https://github.com/khoih-prog/WiFiWebServer/blob/master/examples/WebClient/WebClient.ino
 
 #include "KnexTelemetryClient.h"
-#include "config.h"
+#include "KnexTelemetryClientConfig.h"
 /*
-    define in config.h:
+    define in KnexTelemetryClientConfig.h:
     DOMAIN          domain name of api server
     ACCESS_TOKEN    access token for api
     WIFI_SSID       wifi ssid
