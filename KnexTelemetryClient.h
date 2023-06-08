@@ -2,7 +2,8 @@
 #define KnexTelemetryClient_h
 
 #include <arduino.h>
-#include <WiFi.h>
+#include <SPI.h>
+#include <WiFiNINA.h>
 
 using namespace std;
 
@@ -13,6 +14,7 @@ class KnexTelemetryClient
 
         //public methods
         KnexTelemetryClient(); 
+        void Init();
         void SendSensorValue(string sensorName, string sensorValue);
 
     private:
@@ -25,6 +27,7 @@ class KnexTelemetryClient
         void HttpRequest(string method, string url, string body);
         void GET(string path);
         void POST(string path, string body);
+        
 };
 
 #endif //KnexTelemetryClient_h
