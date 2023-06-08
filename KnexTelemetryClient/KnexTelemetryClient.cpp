@@ -97,40 +97,66 @@ void KnexTelemetryClient::POST(string path, string body)
 //Http request handler
 void KnexTelemetryClient::HttpRequest(string method, string url, string body)
 {
-    if(_wifiClient.connect(DOMAIN, 6969))
+    if(!_wifiClient.connect(DOMAIN, 6969))
+        return;
+
+    //Serial.println("Sending request: ");
+    //Serial.println(F((method + " " + url + " " + "HTTP/1.1").c_str()));
+    _wifiClient.println(F((method + " " + url + " " + "HTTP/1.1").c_str()));
+
+    //Serial.print("Host: ");
+    //Serial.println(DOMAIN);
+    _wifiClient.print("Host: ");
+    _wifiClient.println(DOMAIN);
+
+    //Serial.print("Authorization: Bearer ");
+    //Serial.println(ACCESS_TOKEN);
+    _wifiClient.print("Authorization: Bearer ");
+    _wifiClient.println(ACCESS_TOKEN);
+
+    if(body.length() > 0)
     {
-        Serial.println("Sending request: ");
-        Serial.println(F((method + " " + url + " " + "HTTP/1.1").c_str()));
-        _wifiClient.println(F((method + " " + url + " " + "HTTP/1.1").c_str()));
-
-        Serial.print("Host: ");
-        Serial.println(DOMAIN);
-        _wifiClient.print("Host: ");
-        _wifiClient.println(DOMAIN);
-
-
-        if(body.length() > 0)
-        {
-            //TODO: support for POSTing body
-        }
-        
-        Serial.println(F("Connection: close"));
-        _wifiClient.println(F("Connection: close"));
-
-        Serial.println();
-        _wifiClient.println();
-
-        //Wait for client to be available
-        while(!_wifiClient.available());
-
-        string response = "";
-        while (_wifiClient.available())
-        {
-            char c = _wifiClient.read();
-            response += c;
-        }
-        Serial.println("Received response from server: ");
-        Serial.println(F(response.c_str()));
-        Serial.println();
+        //TODO: support for POSTing body
     }
+    
+    //Serial.println(F("Connection: close"));
+    _wifiClient.println(F("Connection: close"));
+
+    //Serial.println();
+    _wifiClient.println();
+
+    //Wait for client to be available
+    while(!_wifiClient.available());
+
+    /*
+    //Old method that outputs all headers
+    string response = "";
+    while (_wifiClient.available())
+    {
+        char c = _wifiClient.read();
+        response += c;
+    }
+
+    Serial.println("Received response from server: ");
+    Serial.println(F(response.c_str()));
+    Serial.println();
+    */
+    
+    string response = "";
+    bool foundOpenBrace = false;
+    while (_wifiClient.available())
+    {
+        char c = _wifiClient.read();
+        if(c == '{')
+            foundOpenBrace = true;
+
+        if(foundOpenBrace)
+            response += c;
+    }
+    Serial.println("Received response from server: ");
+    Serial.println(F(response.c_str()));
+    Serial.println();
+    
 }
+
+

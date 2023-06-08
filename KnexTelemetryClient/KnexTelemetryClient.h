@@ -10,6 +10,7 @@
 #include <arduino.h>
 #include <SPI.h>
 #include <WiFiNINA.h>
+#include <sstream>
 
 using namespace std;
 
@@ -33,6 +34,7 @@ class KnexTelemetryClient
         void HttpRequest(string method, string url, string body);
         void GET(string path);
         void POST(string path, string body);
+        string ParseResponse(string response);
         
 };
 
