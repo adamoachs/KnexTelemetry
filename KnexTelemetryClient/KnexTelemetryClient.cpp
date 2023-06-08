@@ -1,7 +1,7 @@
 //references: https://github.com/khoih-prog/WiFiWebServer/blob/master/examples/WebClient/WebClient.ino
 
 #include "KnexTelemetryClient.h"
-#include "KnexTelemetryClientConfig.h"
+#include "KnexTelemetryClient_config.h"
 /*
     define in KnexTelemetryClientConfig.h:
     DOMAIN          domain name of api server
