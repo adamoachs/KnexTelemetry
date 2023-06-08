@@ -7,7 +7,7 @@ The ball machine utilizes an Arduino and a variety of sensors to provide remote,
 
 This code consists of three parts:
 - KnexTelemetryApi: A RESTful web API service to receive status updates. Written in (not yet written) and runs on (don't know yet)
-- KnexTelemetryClient: A client app to consume KnexTelemetryApi. Written in C++ and built for an Arduino Nano RP2040 Connect.
+- KnexTelemetryClient: A client app to consume KnexTelemetryApi. Encapsulates wifi and http connectivity. Written in C++ and built for an Arduino Nano RP2040 Connect.
 - KnexTelemetryWeb: A web app to display status. Written in (not yet written) and runs on (don't know yet)
 
 
