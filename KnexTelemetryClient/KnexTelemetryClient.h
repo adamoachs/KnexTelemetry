@@ -1,3 +1,9 @@
+//****************************
+//
+//KnexTelemetryClient headers
+//
+//****************************
+
 #ifndef KnexTelemetryClient_h
 #define KnexTelemetryClient_h
 

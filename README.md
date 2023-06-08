@@ -48,7 +48,7 @@ More methods to come
 	client.SendVar("balls-in-last-hour","240");
 	client.SendVar("total-balls", "12345");
 
-
+The `KnexTelemetryClient.ino` file also contains example code
 
 
 ## KnexTelemetryApi

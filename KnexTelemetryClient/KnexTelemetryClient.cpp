@@ -1,4 +1,8 @@
-//references: https://github.com/khoih-prog/WiFiWebServer/blob/master/examples/WebClient/WebClient.ino
+//****************************
+//
+//KnexTelemetryClient implementation
+//
+//****************************
 
 #include "KnexTelemetryClient.h"
 #include "KnexTelemetryClient_config.h"

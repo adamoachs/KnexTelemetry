@@ -1,3 +1,9 @@
+//****************************
+//
+//Example code on how to use the KnexTelemetryClient class
+//
+//****************************
+
 #include <arduino.h>
 #include "KnexTelemetryClient.h"
 
