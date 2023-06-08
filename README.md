@@ -1,8 +1,9 @@
 
 ## Introduction
-[The Works Museum](https://theworks.org/about-us/) is a children's museum in Bloomington, Minnesota, that teaches engineering skills to children through a variety of fun exhibits. Among this exhibits is a K'nex ball machine, which sends balls down a variety of winding paths to a ball lift, which returns the balls to the top to continue their journey.
+[The Works Museum](https://theworks.org/about-us/) is a children's museum in Bloomington, Minnesota, that teaches engineering skills to children through a variety of interactive and non-interactive exhibits. 
+Among theses exhibits is a K'nex ball machine, which sends balls down a variety of winding paths to a ball lift, which returns the balls to the top to continue their journey.
 
-The ball machine utilizes an Arduino and a variety of sensors to provide remote, browser-based monitoring of the status of the machine.
+The ball machine utilizes an Arduino and a variety of sensors to provide remote, browser-based, real-time monitoring of the status of the machine.
 
 This code consists of three parts:
 - KnexTelemetryApi: A RESTful web API service to receive status updates. Written in (not yet written) and runs on (don't know yet)
