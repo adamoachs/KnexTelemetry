@@ -120,7 +120,8 @@ void KnexTelemetryClient::HttpRequest(string method, string url, string body)
         Serial.println();
         _wifiClient.println();
 
-        delay(500); //Wait a bit for the request to go through. Need to figure out a better way
+        //Wait for client to be available
+        while(!_wifiClient.available());
 
         string response = "";
         while (_wifiClient.available())
