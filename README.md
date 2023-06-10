@@ -1,4 +1,5 @@
 
+
 ## Introduction
 [The Works Museum](https://theworks.org/about-us/) is a children's museum in Bloomington, Minnesota, that teaches engineering skills to children through a variety of interactive and non-interactive exhibits. 
 Among theses exhibits is a K'nex ball machine, which sends balls down a variety of winding paths to a ball lift, which returns the balls to the top to continue their journey.
@@ -40,13 +41,21 @@ Create a `KnexTelemetryClient` object. Call KnexTelemetryClient::Init() before u
 	}
 
 ### Sending data to KnexTelemetryApi
-The KnexTelemetryClient library includes a number of premade methods to send data to KnexTelemetryApi.
-More methods to come
+The KnexTelemetryClient library includes prewired methods to send and receive data to and from KnexTelemetryApi. 
 
 	void KnexTelemetryClient::SendVar(string varName, string varValue)
 	
-	client.SendVar("balls-in-last-hour","240");
-	client.SendVar("total-balls", "12345");
+Parameters
+- varName : The name of the variable to updates
+- varValue : The new value
+
+Returns
+- The new varValue accepted and stored by the server
+
+Example
+
+	string newBallsInLastHour = client.SendVar("balls-in-last-hour","240");
+	string newTotalBalls = client.SendVar("total-balls", "12345");
 
 The `KnexTelemetryClient.ino` file also contains example code
 

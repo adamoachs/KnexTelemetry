@@ -21,12 +21,15 @@ void loop() {
     Serial.print("Loop at: ");
     Serial.println(WiFi.getTime());
 
-    client.SendVar("value-0", to_string(analogRead(0)));
-    client.SendVar("value-1", to_string(analogRead(1)));
-    client.SendVar("value-2", to_string(analogRead(2)));
-    //client.SendVar("value-0", "aaa");
-    //client.SendVar("value-1", "bbb");
-    //client.SendVar("value-2", "ccc");
+    string s0 = client.SendVar("value-0", to_string(analogRead(0)));
+    string s1 = client.SendVar("value-1", to_string(analogRead(1)));
+    string s2 = client.SendVar("value-2", to_string(analogRead(2)));
+
+    Serial.println("New Values: ");
+    Serial.println(F(s0.c_str()));
+    Serial.println(F(s1.c_str()));
+    Serial.println(F(s2.c_str()));
+    
     
     digitalWrite(LED_BUILTIN, HIGH);  
     delay(100); 

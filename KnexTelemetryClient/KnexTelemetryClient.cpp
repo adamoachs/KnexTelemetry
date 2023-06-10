@@ -42,29 +42,26 @@ void KnexTelemetryClient::Init()
 }
 
 //Send specified value for given sensor name
+//Returns the new varValue returned by server
 string KnexTelemetryClient::SendVar(string varName, string varValue)
 {
     StaticJsonDocument<200> jsonReqDoc;
-    jsonReqDoc[varName] = varValue;
+    jsonReqDoc["varName"] = varName;
+    jsonReqDoc["varValue"] = varValue;
     string jsonReqStr = "";
     serializeJson(jsonReqDoc, jsonReqStr);
 
-    string responseStr = POST("/api/sendVar/", jsonReqStr);
+    string responseStr = POST("/api/sendVar", jsonReqStr);
 
     StaticJsonDocument<200> jsonDocRes;
     deserializeJson(jsonDocRes, responseStr);
-    return jsonDocRes["noise"];
+    return jsonDocRes["varValue"];
 }
 
 string KnexTelemetryClient::GetVar(string varName)
 {
     GET("/api/sendVar/" + varName);
 }
-
-//TODO Expose some methods from WiFiClient (status, IP)
-
-
-
 
 
 
@@ -112,6 +109,7 @@ string KnexTelemetryClient::POST(string path, string body)
 }
 
 //Http request handler
+//Returns string containing JSON body. Does not return headers
 string KnexTelemetryClient::HttpRequest(string method, string url, string body)
 {
     if(!_wifiClient.connect(DOMAIN, 6969))
@@ -178,7 +176,7 @@ string KnexTelemetryClient::HttpRequest(string method, string url, string body)
 #endif
 Serial.println();
 
-    return body;
+    return jsonBody;
 }
 
 
