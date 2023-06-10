@@ -22,8 +22,8 @@ class KnexTelemetryClient
         //public methods
         KnexTelemetryClient(); 
         void Init();
-        void SendVar(string varName, string varValue);
-        void GetVar(string varName);
+        string SendVar(string varName, string varValue);
+        string GetVar(string varName);
 
     private:
         //private fields
@@ -32,9 +32,9 @@ class KnexTelemetryClient
 
         //private methods
         void WiFiInit();
-        void HttpRequest(string method, string url, string body);
-        void GET(string path);
-        void POST(string path, string body);
+        string HttpRequest(string method, string url, string body);
+        string GET(string path);
+        string POST(string path, string body);
         string ParseResponse(string response);
         
 };

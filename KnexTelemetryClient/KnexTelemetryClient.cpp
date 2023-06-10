@@ -4,14 +4,20 @@
 //
 //************************************************************************************
 
+#include <ArduinoJson.h>
 #include "KnexTelemetryClient.h"
 #include "KnexTelemetryClient_config.h"
 /*
     define in KnexTelemetryClientConfig.h:
+
+    required defines:
     DOMAIN          domain name of api server
     ACCESS_TOKEN    access token for api
     WIFI_SSID       wifi ssid
     WIFI_PASSWORD   wifi password
+
+    optional defines:
+    VERBOSE         enable verbose Serial.print messages
 */
 
 using namespace std;
@@ -32,19 +38,25 @@ KnexTelemetryClient::KnexTelemetryClient()
 void KnexTelemetryClient::Init()
 {
     while(millis() < 5000);
-
     WiFiInit();
 }
 
 //Send specified value for given sensor name
-void KnexTelemetryClient::SendVar(string varName, string varValue)
+string KnexTelemetryClient::SendVar(string varName, string varValue)
 {
-    POST("/api/sendVar/", varValue);
-    //TODO: change this back to POST after figuring out how to get POSTs working
-    //GET("/api/sendVar/" + varName);
+    StaticJsonDocument<200> jsonReqDoc;
+    jsonReqDoc[varName] = varValue;
+    string jsonReqStr = "";
+    serializeJson(jsonReqDoc, jsonReqStr);
+
+    string responseStr = POST("/api/sendVar/", jsonReqStr);
+
+    StaticJsonDocument<200> jsonDocRes;
+    deserializeJson(jsonDocRes, responseStr);
+    return jsonDocRes["noise"];
 }
 
-void KnexTelemetryClient::GetVar(string varName)
+string KnexTelemetryClient::GetVar(string varName)
 {
     GET("/api/sendVar/" + varName);
 }
@@ -88,85 +100,85 @@ void KnexTelemetryClient::WiFiInit()
 }
 
 //Send GET request to given path
-void KnexTelemetryClient::GET(string path)
+string KnexTelemetryClient::GET(string path)
 {
-    HttpRequest("GET", path, "");
+    return HttpRequest("GET", path, "");
 }
 
 //Send POST request to given path, with given body
-void KnexTelemetryClient::POST(string path, string body)
+string KnexTelemetryClient::POST(string path, string body)
 {
-    HttpRequest("POST", path, body);
+    return HttpRequest("POST", path, body);
 }
 
 //Http request handler
-void KnexTelemetryClient::HttpRequest(string method, string url, string body)
+string KnexTelemetryClient::HttpRequest(string method, string url, string body)
 {
     if(!_wifiClient.connect(DOMAIN, 6969))
-        return;
+        return "";
 
-    _wifiClient.println(F((method + " " + url + " " + "HTTP/1.1").c_str()));
-    _wifiClient.print("Host: ");
-    _wifiClient.println(DOMAIN);
-    _wifiClient.println(F("Connection: close"));
-    _wifiClient.print("Authorization: Bearer ");
-    _wifiClient.println(ACCESS_TOKEN);
-
-    Serial.println("Request: ");
-    Serial.println(F((method + " " + url + " " + "HTTP/1.1").c_str()));
-    Serial.print("Host: ");
-    Serial.println(DOMAIN);
-    Serial.println(F("Connection: close"));
-    Serial.print("Authorization: Bearer ");
-    Serial.println(ACCESS_TOKEN);
+    //Build HTTP request
+    string request;
+    request += method + " " + url + " " + "HTTP/1.1\r\n";
+    request += "Host: " + string(DOMAIN) + "\r\n";
+    request += "Connection: close\r\n";
+    request += "Authorization: Bearer " + string(ACCESS_TOKEN) + "\r\n";
 
     if(body.length() > 0)
     {
-        Serial.println("Content-Type: text/plain");
-        Serial.println("Content-Length: " + String(body.length()));
-        Serial.println();
-        Serial.println(F(body.c_str()));
-
-        _wifiClient.println("Content-Type: text/plain");
-        _wifiClient.println("Content-Length: " + String(body.length()));
-        _wifiClient.println();
-        _wifiClient.println(F(body.c_str()));
+        request += "Content-Type: application/json\r\n";
+        request += "Content-Length: " + to_string(body.length()) + "\r\n";
+        request += "\r\n";
+        request += body;
     }
     
-    _wifiClient.println();
-    Serial.println();
+    request += "\r\n";
 
-    //Wait for client to be available
+    Serial.println("Request: ");
+#ifdef VERBOSE
+    Serial.print(F(request.c_str()));
+#else
+    Serial.println(F((method + " " + url).c_str()));
+    Serial.println(F(body.c_str()));
+    Serial.println();
+#endif
+
+    //Send request
+    _wifiClient.print(F(request.c_str()));
+
+    //Wait for client to be available with response
     while(!_wifiClient.available());
-    
-    //Old method that outputs all headers
-    string response = "";
-    while (_wifiClient.available())
-    {
-        char c = _wifiClient.read();
-        response += c;
-    }
 
-    Serial.println("Response: ");
-    Serial.println(F(response.c_str()));
-    Serial.println();
-    
-    /*
+    //Handle response
+#ifdef VERBOSE
     string response = "";
+#endif
+    string jsonBody = "";
     bool foundOpenBrace = false;
     while (_wifiClient.available())
     {
         char c = _wifiClient.read();
+#ifdef VERBOSE
+        response += c;
+#endif
+        //Look for an opening curly brace denoting the start of the json body
+        //then add everything until end of response to jsonBody
         if(c == '{')
             foundOpenBrace = true;
 
         if(foundOpenBrace)
-            response += c;
+            jsonBody += c;
     }
-    Serial.println("Received response from server: ");
+
+    Serial.println("Response: ");
+#ifdef VERBOSE
     Serial.println(F(response.c_str()));
-    Serial.println();
-    */
+#else
+    Serial.println(F(jsonBody.c_str()));
+#endif
+Serial.println();
+
+    return body;
 }
 
 
