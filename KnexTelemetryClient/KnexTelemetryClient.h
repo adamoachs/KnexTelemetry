@@ -22,7 +22,8 @@ class KnexTelemetryClient
         //public methods
         KnexTelemetryClient(); 
         void Init();
-        void SendSensorValue(string sensorName, string sensorValue);
+        void SendVar(string varName, string varValue);
+        void GetVar(string varName);
 
     private:
         //private fields

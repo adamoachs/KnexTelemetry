@@ -37,11 +37,16 @@ void KnexTelemetryClient::Init()
 }
 
 //Send specified value for given sensor name
-void KnexTelemetryClient::SendSensorValue(string sensorName, string sensorValue)
+void KnexTelemetryClient::SendVar(string varName, string varValue)
 {
-    //POST("/knexapi/sensorValue/" + sensorName, sensorValue);
+    POST("/api/sendVar/", varValue);
     //TODO: change this back to POST after figuring out how to get POSTs working
-    GET("/knexapi/sensorValue/" + sensorName);
+    //GET("/api/sendVar/" + varName);
+}
+
+void KnexTelemetryClient::GetVar(string varName)
+{
+    GET("/api/sendVar/" + varName);
 }
 
 //TODO Expose some methods from WiFiClient (status, IP)
@@ -100,35 +105,40 @@ void KnexTelemetryClient::HttpRequest(string method, string url, string body)
     if(!_wifiClient.connect(DOMAIN, 6969))
         return;
 
-    //Serial.println("Sending request: ");
-    //Serial.println(F((method + " " + url + " " + "HTTP/1.1").c_str()));
     _wifiClient.println(F((method + " " + url + " " + "HTTP/1.1").c_str()));
-
-    //Serial.print("Host: ");
-    //Serial.println(DOMAIN);
     _wifiClient.print("Host: ");
     _wifiClient.println(DOMAIN);
-
-    //Serial.print("Authorization: Bearer ");
-    //Serial.println(ACCESS_TOKEN);
+    _wifiClient.println(F("Connection: close"));
     _wifiClient.print("Authorization: Bearer ");
     _wifiClient.println(ACCESS_TOKEN);
 
+    Serial.println("Request: ");
+    Serial.println(F((method + " " + url + " " + "HTTP/1.1").c_str()));
+    Serial.print("Host: ");
+    Serial.println(DOMAIN);
+    Serial.println(F("Connection: close"));
+    Serial.print("Authorization: Bearer ");
+    Serial.println(ACCESS_TOKEN);
+
     if(body.length() > 0)
     {
-        //TODO: support for POSTing body
+        Serial.println("Content-Type: text/plain");
+        Serial.println("Content-Length: " + String(body.length()));
+        Serial.println();
+        Serial.println(F(body.c_str()));
+
+        _wifiClient.println("Content-Type: text/plain");
+        _wifiClient.println("Content-Length: " + String(body.length()));
+        _wifiClient.println();
+        _wifiClient.println(F(body.c_str()));
     }
     
-    //Serial.println(F("Connection: close"));
-    _wifiClient.println(F("Connection: close"));
-
-    //Serial.println();
     _wifiClient.println();
+    Serial.println();
 
     //Wait for client to be available
     while(!_wifiClient.available());
-
-    /*
+    
     //Old method that outputs all headers
     string response = "";
     while (_wifiClient.available())
@@ -137,11 +147,11 @@ void KnexTelemetryClient::HttpRequest(string method, string url, string body)
         response += c;
     }
 
-    Serial.println("Received response from server: ");
+    Serial.println("Response: ");
     Serial.println(F(response.c_str()));
     Serial.println();
-    */
     
+    /*
     string response = "";
     bool foundOpenBrace = false;
     while (_wifiClient.available())
@@ -156,7 +166,7 @@ void KnexTelemetryClient::HttpRequest(string method, string url, string body)
     Serial.println("Received response from server: ");
     Serial.println(F(response.c_str()));
     Serial.println();
-    
+    */
 }
 
 
