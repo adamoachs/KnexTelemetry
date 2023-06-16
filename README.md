@@ -43,7 +43,7 @@ Create a `KnexTelemetryClient` object. Call KnexTelemetryClient::Init() before u
 ### Sending data to KnexTelemetryApi
 The KnexTelemetryClient library includes prewired methods to send and receive data to and from KnexTelemetryApi. 
 
-	void KnexTelemetryClient::SendVar(string varName, string varValue)
+	string KnexTelemetryClient::SendVar(string varName, string varValue)
 	
 Parameters
 - varName : The name of the variable to updates
