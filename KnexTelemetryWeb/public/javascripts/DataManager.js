@@ -4,11 +4,12 @@
 
 const sqlite3 = require('sqlite3');
 const fs = require('fs');
+const dotenv = require('dotenv');
+dotenv.config({path: 'app.env'});
 
 class DataManager {
 
     static dbPath = './knexdata.db';
-    static dataLifetimeHours = 72;
 
     constructor() {
         this.Data = {};
@@ -71,9 +72,17 @@ class DataManager {
             let a =5;
         });
 
-        const sql = `SELECT DataKey, DataValue, Timestamp FROM Telemetry WHERE TimeStamp > $DateCutoff`;
-        //const params = { $DateCutoff: Date.now() - (DataManager.dataLifetimeHours * 60 * 60) }
-        const params = { $DateCutoff: 0 }
+        const hours = (process.env.DATALIFETIMEHOURS || 72)
+        let sql;
+        let params;
+        if(hours == -1) {
+            sql = `SELECT DataKey, DataValue, Timestamp FROM Telemetry`;
+            params = {};
+        } else {
+            sql = `SELECT DataKey, DataValue, Timestamp FROM Telemetry WHERE TimeStamp > $DateCutoff`;
+            params = { $DateCutoff: Date.now() - ((process.env.DATALIFETIMEHOURS || 72) * 60 * 60) };
+        }
+        
         db.all(sql, params, (err, rows) => {
             rows.forEach(row => {
                 //Add row to local Data cache
