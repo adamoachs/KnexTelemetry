@@ -58,7 +58,9 @@ Create a `KnexTelemetryClient` object. In the project `setup` method, call KnexT
 
 ### Sending data to KnexTelemetryWeb
 
-Given the light weight nature of the API, only one method is needed to send data. 
+The client supports two methods to send data
+- `SendData` is for metrics to may want to be tracked over time to monitor trends. Data is timestamped and kept for a configurable length of time.
+- `SendStatus` is for current status only. Data is timestamped to track it's last update, but only the most recent update is stored.
 
 	string KnexTelemetryClient::SendData(string dataKey, string dataValue)
 	
@@ -66,13 +68,20 @@ Parameters
 - dataKey: The name of the sensor or calculated variable to update
 - dataValue: The new value
 
-Returns
-- The new dataValue accepted and stored by the server
+Example
+	client.SendData("balls-in-last-hour","240");
+	client.SendData("total-balls", "12345");
+	
+	string KnexTelemetryClient::SendStatus(string statusName, string statusValue)
+	
+Parameters
+- statusName: The name of the status to update
+- statusValue: The new value
 
 Example
-
-	string newBallsInLastHour = client.SendData("balls-in-last-hour","240");
-	string newTotalBalls = client.SendData("total-balls", "12345");
+	client.SendStatus("lift-1", "online");
+	client.SendStatus("lift-2", "online");
+	client.SendStatus("lift-3", "offline");
 
 The `KnexTelemetryClient.ino` file also contains example code
 

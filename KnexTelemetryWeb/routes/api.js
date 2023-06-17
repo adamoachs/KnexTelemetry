@@ -11,6 +11,14 @@ router.post('/data', function(req, res, next) {
   res.send(DataManager.Data);
 });
 
+router.post('/status', function(req, res, next) {
+  if(!Authorized(req, res))
+    return;
+
+  //DataManager.LogStatus(req.body);
+  //res.send(DataManager.Data);
+});
+
 router.get('/data', function(req, res, next) {
   res.send(DataManager.Data);
 });

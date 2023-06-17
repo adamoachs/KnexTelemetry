@@ -64,9 +64,20 @@ string KnexTelemetryClient::SendData(string dataKey, string dataValue)
     return jsonDocRes["DataValue"];
 }
 
-string KnexTelemetryClient::GetVar(string varName)
+string KnexTelemetryClient::SendStatus(string statusName, string statusValue)
 {
-    GET("/api/sendVar/" + varName);
+    StaticJsonDocument<200> jsonReqDoc;
+    jsonReqDoc["StatusName"] = statusName;
+    jsonReqDoc["StatusValue"] = statusValue;
+    jsonReqDoc["Timestamp"] = WiFi.getTime();
+    string jsonReqStr = "";
+    serializeJson(jsonReqDoc, jsonReqStr);
+
+    string responseStr = POST("/api/status", jsonReqStr);
+
+    StaticJsonDocument<200> jsonDocRes;
+    deserializeJson(jsonDocRes, responseStr);
+    return jsonDocRes["DataValue"];
 }
 
 

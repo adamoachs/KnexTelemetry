@@ -22,8 +22,8 @@ class KnexTelemetryClient
         //public methods
         KnexTelemetryClient(); 
         void Init();
-        string SendData(string varName, string varValue);
-        string GetVar(string varName);
+        string SendData(string dataKey, string dataValue);
+        string SendStatus(string statusName, string statusValue);
 
     private:
         //private fields
