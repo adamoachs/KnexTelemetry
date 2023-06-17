@@ -180,7 +180,7 @@ string KnexTelemetryClient::HttpRequest(string method, string url, string body)
 #else
     Serial.println(F(jsonBody.c_str()));
 #endif
-Serial.println();
+    Serial.println();
 
     return jsonBody;
 }
