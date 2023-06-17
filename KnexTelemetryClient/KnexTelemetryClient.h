@@ -22,7 +22,7 @@ class KnexTelemetryClient
         //public methods
         KnexTelemetryClient(); 
         void Init();
-        string SendVar(string varName, string varValue);
+        string SendData(string varName, string varValue);
         string GetVar(string varName);
 
     private:

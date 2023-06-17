@@ -6,10 +6,9 @@ Among theses exhibits is a K'nex ball machine, which sends balls down a variety 
 
 The ball machine utilizes an Arduino and a variety of sensors to provide remote, browser-based, real-time monitoring of the status of the machine.
 
-This code consists of three parts:
-- KnexTelemetryApi: A RESTful web API service to receive status updates. Written in (not yet written) and runs on (don't know yet)
+This code consists of two parts:
 - KnexTelemetryClient: A client app to consume KnexTelemetryApi. Encapsulates wifi and http connectivity. Written in C++ and built for an Arduino Nano RP2040 Connect.
-- KnexTelemetryWeb: A web app to display status. Written in (not yet written) and runs on (don't know yet)
+- KnexTelemetryWeb: Contains both a RESTful API for receiving data and a UI app to display it. Written in Node.js.
 
 
 
@@ -25,13 +24,18 @@ Install the following libraries:
 
 Create a `KnexTelemetryClient_config.h` file and place it in your project folder. This file will define wifi and application credentials. `DOMAIN` and `ACCESS_TOKEN` must match the domain and access_token configured with KnexTelemetryApi. 
 
-    #ifndef  KnexTelemetryClient_config_h
-    #define  KnexTelemetryClient_config_h
+    #ifndef KnexTelemetryClient_config_h
+    #define KnexTelemetryClient_config_h
     
-    #define  DOMAIN  "www.example.com"
-    #define  ACCESS_TOKEN  "authtoken"
-    #define  WIFI_SSID  "Wifi Name"
-    #define  WIFI_PASSWORD  "Wifi Password"
+	//mandatory
+    #define DOMAIN  "www.example.com"
+    #define ACCESS_TOKEN  "authtoken"
+    #define WIFI_SSID  "Wifi Name"
+    #define WIFI_PASSWORD  "Wifi Password"
+	
+	//optional
+	#define PORT 3000 //will use 443 if undefined
+	#define VERBOSE //enable verbose Serial monitor logging
     
     #endif //KnexTelemetryClient_config_h
 
@@ -46,29 +50,24 @@ Create a `KnexTelemetryClient` object. Call KnexTelemetryClient::Init() before u
 		client.Init();
 	}
 
-### Sending data to KnexTelemetryApi
-The KnexTelemetryClient library includes prewired methods to send and receive data to and from KnexTelemetryApi. 
+### Sending data to KnexTelemetryWeb
+Given the light weight nature of the API, only one method is needed to send data. 
 
-	string KnexTelemetryClient::SendVar(string varName, string varValue)
+	string KnexTelemetryClient::SendData(string dataKey, string dataValue)
 	
 Parameters
-- varName : The name of the variable to updates
-- varValue : The new value
+- dataKey : The name of the sensor or calculated variable to update
+- dataValue : The new value
 
 Returns
-- The new varValue accepted and stored by the server
+- The new dataValue accepted and stored by the server
 
 Example
 
-	string newBallsInLastHour = client.SendVar("balls-in-last-hour","240");
-	string newTotalBalls = client.SendVar("total-balls", "12345");
+	string newBallsInLastHour = client.SendData("balls-in-last-hour","240");
+	string newTotalBalls = client.SendData("total-balls", "12345");
 
 The `KnexTelemetryClient.ino` file also contains example code
-
-
-## KnexTelemetryApi
-Not done yet
-
 
 
 ## KnexTelemetryWeb

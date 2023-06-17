@@ -12,6 +12,7 @@
 
     required defines:
     DOMAIN          domain name of api server
+    PORT            port of the api server
     ACCESS_TOKEN    access token for api
     WIFI_SSID       wifi ssid
     WIFI_PASSWORD   wifi password
@@ -19,6 +20,10 @@
     optional defines:
     VERBOSE         enable verbose Serial.print messages
 */
+
+#ifndef PORT
+#define PORT 443
+#endif //PORT
 
 using namespace std;
 
@@ -43,19 +48,20 @@ void KnexTelemetryClient::Init()
 
 //Send specified value for given sensor name
 //Returns the new varValue returned by server
-string KnexTelemetryClient::SendVar(string varName, string varValue)
+string KnexTelemetryClient::SendData(string dataKey, string dataValue)
 {
     StaticJsonDocument<200> jsonReqDoc;
-    jsonReqDoc["varName"] = varName;
-    jsonReqDoc["varValue"] = varValue;
+    jsonReqDoc["dataKey"] = dataKey;
+    jsonReqDoc["dataValue"] = dataValue;
+    jsonReqDoc["timestamp"] = WiFi.getTime();
     string jsonReqStr = "";
     serializeJson(jsonReqDoc, jsonReqStr);
 
-    string responseStr = POST("/api/sendVar", jsonReqStr);
+    string responseStr = POST("/api/data", jsonReqStr);
 
     StaticJsonDocument<200> jsonDocRes;
     deserializeJson(jsonDocRes, responseStr);
-    return jsonDocRes["varValue"];
+    return jsonDocRes["dataValue"];
 }
 
 string KnexTelemetryClient::GetVar(string varName)
@@ -112,7 +118,7 @@ string KnexTelemetryClient::POST(string path, string body)
 //Returns string containing JSON body. Does not return headers
 string KnexTelemetryClient::HttpRequest(string method, string url, string body)
 {
-    if(!_wifiClient.connect(DOMAIN, 6969))
+    if(!_wifiClient.connect(DOMAIN, PORT))
         return "";
 
     //Build HTTP request
