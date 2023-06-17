@@ -22,7 +22,7 @@ Install the following libraries:
 
 ### Config
 
-Create a `KnexTelemetryClient_config.h` file and place it in your project folder. This file will define wifi and application credentials. `DOMAIN` and `ACCESS_TOKEN` must match the domain and access_token configured with KnexTelemetryApi. 
+Create a `KnexTelemetryClient_config.h` file and place it in your project folder. This file will define wifi and application credentials. `DOMAIN` and `ACCESS_TOKEN` must match the domain and access_token configured with KnexTelemetryWeb. 
 
     #ifndef KnexTelemetryClient_config_h
     #define KnexTelemetryClient_config_h
@@ -71,4 +71,21 @@ The `KnexTelemetryClient.ino` file also contains example code
 
 
 ## KnexTelemetryWeb
-Not done yet
+
+### Dependencies
+
+Run `npm install` to download dependencies
+
+	npm install
+	
+### Config
+
+Create a `app.env` file and place it in your project folder. This file will define application credentials. `DOMAIN` and `ACCESS_TOKEN` must match the domain and access_token configured with KnexTelemetryClient. 
+
+	#mandatory
+	ACCESS_TOKEN=asd123
+
+	#optional
+	PORT=6969 #defaults to 443 if unspecified
+	ENV=dev #set to dev for full error messages
+
