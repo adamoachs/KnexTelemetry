@@ -16,7 +16,7 @@ This code consists of two parts:
 
 ### Dependencies
 
-Install the following libraries:
+In the Arduino IDE Library Manager, install the following libraries:
 - WiFiNINA
 - ArduinoJson
 
@@ -38,6 +38,12 @@ Create a `KnexTelemetryClient_config.h` file and place it in your project folder
 	#define VERBOSE //enable verbose Serial monitor logging
     
     #endif //KnexTelemetryClient_config_h
+	
+### Include
+
+Include the `KnexTelemetryClient.h` file in your .ino file
+
+	#include "KnexTelemetryClient.h"
 
 ### Instantiation
 
@@ -51,6 +57,7 @@ Create a `KnexTelemetryClient` object. In the project `setup` method, call KnexT
 	}
 
 ### Sending data to KnexTelemetryWeb
+
 Given the light weight nature of the API, only one method is needed to send data. 
 
 	string KnexTelemetryClient::SendData(string dataKey, string dataValue)
