@@ -41,7 +41,7 @@ Create a `KnexTelemetryClient_config.h` file and place it in your project folder
 
 ### Instantiation
 
-Create a `KnexTelemetryClient` object. Call KnexTelemetryClient::Init() before use 
+Create a `KnexTelemetryClient` object. In the project `setup` method, call KnexTelemetryClient::Init() before use 
 
 	KnexTelemetryClient client;
 	
@@ -83,9 +83,9 @@ Run `npm install` to download dependencies
 Create a `app.env` file and place it in your project folder. This file will define application credentials. `DOMAIN` and `ACCESS_TOKEN` must match the domain and access_token configured with KnexTelemetryClient. 
 
 	#mandatory
-	ACCESS_TOKEN=asd123
+	ACCESS_TOKEN=authtoken
 
 	#optional
-	PORT=6969 #defaults to 443 if unspecified
+	PORT=3000 #defaults to 443 if unspecified
 	ENV=dev #set to dev for full error messages
 
