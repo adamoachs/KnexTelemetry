@@ -7,8 +7,8 @@ Among theses exhibits is a K'nex ball machine, which sends balls down a variety 
 The ball machine utilizes an Arduino and a variety of sensors to provide remote, browser-based, real-time monitoring of the status of the machine.
 
 This code consists of two parts:
-- KnexTelemetryClient: A client app to consume KnexTelemetryApi. Encapsulates wifi and http connectivity. Written in C++ and built for an Arduino Nano RP2040 Connect.
-- KnexTelemetryWeb: Contains both a RESTful API for receiving data and a UI app to display it. Written in Node.js.
+- KnexTelemetryClient: A library to send data to KnexTelemetryWeb. Encapsulates wifi and http connectivity. Written in C++ and built for an Arduino Nano RP2040 Connect. This library is intended for use in a larger Arduino project. It only facilitates sending of data, not collection of data from sensors
+- KnexTelemetryWeb: Contains both a RESTful API for receiving data and a UI app to display it. Build with Node.js.
 
 
 
@@ -56,8 +56,8 @@ Given the light weight nature of the API, only one method is needed to send data
 	string KnexTelemetryClient::SendData(string dataKey, string dataValue)
 	
 Parameters
-- dataKey : The name of the sensor or calculated variable to update
-- dataValue : The new value
+- dataKey: The name of the sensor or calculated variable to update
+- dataValue: The new value
 
 Returns
 - The new dataValue accepted and stored by the server
