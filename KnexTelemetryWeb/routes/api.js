@@ -7,7 +7,7 @@ router.post('/data', function(req, res, next) {
   if(!Authorized(req, res))
     return;
 
-  DataManager.LogData(req.body)
+  DataManager.LogData(req.body);
   res.send(DataManager.Data);
 });
 

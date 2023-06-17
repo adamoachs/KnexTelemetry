@@ -51,9 +51,9 @@ void KnexTelemetryClient::Init()
 string KnexTelemetryClient::SendData(string dataKey, string dataValue)
 {
     StaticJsonDocument<200> jsonReqDoc;
-    jsonReqDoc["dataKey"] = dataKey;
-    jsonReqDoc["dataValue"] = dataValue;
-    jsonReqDoc["timestamp"] = WiFi.getTime();
+    jsonReqDoc["DataKey"] = dataKey;
+    jsonReqDoc["DataValue"] = dataValue;
+    jsonReqDoc["Timestamp"] = WiFi.getTime();
     string jsonReqStr = "";
     serializeJson(jsonReqDoc, jsonReqStr);
 
@@ -61,7 +61,7 @@ string KnexTelemetryClient::SendData(string dataKey, string dataValue)
 
     StaticJsonDocument<200> jsonDocRes;
     deserializeJson(jsonDocRes, responseStr);
-    return jsonDocRes["dataValue"];
+    return jsonDocRes["DataValue"];
 }
 
 string KnexTelemetryClient::GetVar(string varName)

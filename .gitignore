@@ -1,3 +1,4 @@
 KnexTelemetryClient/KnexTelemetryClient_config.h
 KnexTelemetryWeb/app.env
 KnexTelemetryWeb/node_modules
+KnexTelemetryWeb/knexdata.db
