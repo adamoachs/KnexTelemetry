@@ -15,6 +15,12 @@ This code consists of three parts:
 
 ## KnexTelemetryClient
 
+### Dependencies
+
+Install the following libraries:
+- WiFiNINA
+- ArduinoJson
+
 ### Config
 
 Create a `KnexTelemetryClient_config.h` file and place it in your project folder. This file will define wifi and application credentials. `DOMAIN` and `ACCESS_TOKEN` must match the domain and access_token configured with KnexTelemetryApi. 
