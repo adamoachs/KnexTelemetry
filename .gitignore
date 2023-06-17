@@ -1,2 +1,3 @@
-**/*_config.h
-**/*.env
+KnexTelemetryClient/KnexTelemetryClient_config.h
+KnexTelemetryWeb/app.env
+KnexTelemetryWeb/node_modules
