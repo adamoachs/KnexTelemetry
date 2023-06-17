@@ -79,6 +79,8 @@ The `KnexTelemetryClient.ino` file also contains example code
 
 ## KnexTelemetryWeb
 
+(This section still in progress)
+
 ### Dependencies
 
 Run `npm install` to download dependencies
