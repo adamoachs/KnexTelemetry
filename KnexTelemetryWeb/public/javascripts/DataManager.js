@@ -10,19 +10,32 @@ dotenv.config({path: 'app.env'});
 class DataManager {
 
     static dbPath = './knexdata.db';
+    static instance;
+
+    static GetInstance() {
+        if(DataManager.instance == null)
+            DataManager.instance = new DataManager();
+            
+        return DataManager.instance;
+    }
 
     constructor() {
         this.Data = {};
 
         if(fs.existsSync(DataManager.dbPath))
-            this.Database = this.#OpenDatabase(DataManager.dbPath);
+            this.#OpenDatabase(DataManager.dbPath);
         else
-            this.Database = this.#CreateAndOpenDatabase(DataManager.dbPath);
+            this.#CreateAndOpenDatabase(DataManager.dbPath);
     }
 
     LogData(newData) {
         this.#LogDataLocal(newData);
         this.#LogDataDatabase(newData);
+    }
+
+    PruneOldData(){
+        this.#PruneDataLocal();
+        this.#PruneDataDatabase();
     }
 
     #LogDataLocal(newData) {
@@ -31,8 +44,8 @@ class DataManager {
             this.Data[newData.DataKey] = [];
 
         this.Data[newData.DataKey].push({
-            dataValue: newData.DataValue,
-            timestamp: newData.Timestamp
+            DataValue: newData.DataValue,
+            Timestamp: newData.Timestamp
         });
     }
 
@@ -52,10 +65,46 @@ class DataManager {
         this.Database.run(sql, params);
     }
 
-    #CreateAndOpenDatabase(path) {
-        const newdb = new sqlite3.Database(path);
+    #PruneDataLocal(){
+        //Prune old data from local cache
+        const hours = (process.env.DATALIFETIMEHOURS || 72);
+        if(hours == -1)
+            return;
 
-        newdb.exec(`
+        const dateCutoff = (Date.now() / 1000) - (hours * 60 * 60);
+
+        for(const DataKey in this.Data){
+            //for(const item of this.Data[DataKey])
+            for(let i = this.Data[DataKey].length - 1; i >= 0; i--)
+            {
+                let item = this.Data[DataKey][i];
+                if(item.Timestamp < dateCutoff) {
+                    const index = this.Data[DataKey].indexOf(item);
+                    this.Data[DataKey].splice(index, 1);
+                }
+            }
+        }
+    }
+
+    #PruneDataDatabase(){
+        //Prune old data from database
+        const hours = (process.env.DATALIFETIMEHOURS || 72);
+        if(hours == -1)
+            return;
+
+        const sql = `
+            DELETE FROM Telemetry
+            WHERE TimeStamp < $DateCutoff
+        `;
+        const params = { $DateCutoff: Date.now() - (hours * 60 * 60) };
+
+        this.Database.run(sql, params);
+    }
+
+    #CreateAndOpenDatabase(path) {
+        this.Database = new sqlite3.Database(path);
+
+        this.Database.exec(`
             CREATE TABLE Telemetry (
                 DataId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                 DataKey VARCHAR(50) NOT NULL,
@@ -63,27 +112,17 @@ class DataManager {
                 Timestamp DATETIME NOT NULL
             );
         `);
-
-        return newdb;
     }
 
     #OpenDatabase(path) {
-        const db = new sqlite3.Database(path, sqlite3.OPEN_READWRITE, (err) => {
-            let a =5;
-        });
+        this.Database = new sqlite3.Database(path, sqlite3.OPEN_READWRITE);  
+        const sql = `SELECT DataKey, DataValue, Timestamp FROM Telemetry`;
+        const params = [];
 
-        const hours = (process.env.DATALIFETIMEHOURS || 72)
-        let sql;
-        let params;
-        if(hours == -1) {
-            sql = `SELECT DataKey, DataValue, Timestamp FROM Telemetry`;
-            params = {};
-        } else {
-            sql = `SELECT DataKey, DataValue, Timestamp FROM Telemetry WHERE TimeStamp > $DateCutoff`;
-            params = { $DateCutoff: Date.now() - ((process.env.DATALIFETIMEHOURS || 72) * 60 * 60) };
-        }
+        //Clear old data before loading it into memory
+        this.#PruneDataDatabase();
         
-        db.all(sql, params, (err, rows) => {
+        this.Database.all(sql, params, (err, rows) => {
             rows.forEach(row => {
                 //Add row to local Data cache
                 const rowdata = {
@@ -94,8 +133,6 @@ class DataManager {
                 this.#LogDataLocal(rowdata);
             });
         });
-
-       return db;
     }
 
 }

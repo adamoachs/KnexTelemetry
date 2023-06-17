@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const DataManager = new (require('../public/javascripts/DataManager.js'));
+const DataManager = (require('../public/javascripts/DataManager.js')).GetInstance();
 
 
 router.post('/data', function(req, res, next) {
@@ -8,6 +8,10 @@ router.post('/data', function(req, res, next) {
     return;
 
   DataManager.LogData(req.body);
+  res.send(DataManager.Data);
+});
+
+router.get('/data', function(req, res, next) {
   res.send(DataManager.Data);
 });
 
