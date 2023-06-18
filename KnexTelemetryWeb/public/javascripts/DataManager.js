@@ -1,7 +1,5 @@
 //This class handles storing and caching of data in memory, as well as storing and retrieving from DB
 
-//TODO: Periodically prune data from this.Data that's older than dataLifetimeHours
-
 const sqlite3 = require('sqlite3');
 const fs = require('fs');
 const dotenv = require('dotenv');
@@ -21,6 +19,7 @@ class DataManager {
 
     constructor() {
         this.Data = {};
+        this.Status = {};
 
         if(fs.existsSync(DataManager.dbPath))
             this.#OpenDatabase(DataManager.dbPath);
@@ -36,6 +35,14 @@ class DataManager {
     PruneOldData(){
         this.#PruneDataLocal();
         this.#PruneDataDatabase();
+    }
+
+    SetStatus(newStatus) {
+        this.Status[newStatus.StatusName] = {
+            StatusValue: newStatus.StatusValue, 
+            Timestamp: newStatus.TimeStamp
+        };
+        //Not logging status to DB, as we only keep current status and not history
     }
 
     #LogDataLocal(newData) {
