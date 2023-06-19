@@ -69,6 +69,14 @@ Parameters
 - dataKey: The name of the sensor or calculated variable to update
 - dataValue: The new value
 
+dataKey currently supporting the following values:
+ - lift-1-rpm
+ - lift-2-rpm
+ - lift-3-rpm
+ - lift-1-balls-in-last-hour
+ - lift-2-balls-in-last-hour
+ - lift-3-balls-in-last-hour
+
 Example
 
     client.SendData("balls-in-last-hour","240");
@@ -79,6 +87,11 @@ Example
 Parameters
 - statusName: The name of the status to update
 - statusValue: The new value
+
+dataKey currently supporting the following values:
+ - lift-1-status
+ - lift-2-status
+ - lift-3-status
 
 Example
 
