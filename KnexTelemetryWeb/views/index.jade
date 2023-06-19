@@ -1,5 +1,28 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  - for(let i = 1; i <= 3; i++)
+    div(class='lift-status-wrapper')
+      div(class='lift-status')
+        div(class='lift-status-header')
+          p Lift #{i}
+        div(class='lift-status-body')
+
+          - const status = DataManager.GetStatus(`lift-${i}-status`);
+          - const statusValue = status.StatusValue;
+          - const statusValueLower = statusValue.toLowerCase();
+          - const statusTimespan = (Date.now()/1000) - status.Timestamp;
+          span Status: 
+          case statusValueLower
+            when 'online'
+              span(class='good-color') ONLINE
+            when 'offline'
+              span(class='error-color') OFFLINE 
+            default 
+              span(class='warning-color') #{statusValue} 
+
+          - const rpm = DataManager.GetLatestDataByKey(`lift-${i}-rpm`).DataValue;
+          p RPM: #{rpm}
+          
+          - const ballsInLastHour = DataManager.GetLatestDataByKey(`lift-${i}-balls-in-last-hour`).DataValue;
+          p Balls in Last Hour: #{ballsInLastHour}
