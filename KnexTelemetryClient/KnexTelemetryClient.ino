@@ -21,15 +21,17 @@ void loop() {
     Serial.print("Loop at: ");
     Serial.println(WiFi.getTime());
 
-    string s0 = client.SendData("value-0", to_string(analogRead(0)));
-    string s1 = client.SendData("value-1", to_string(analogRead(1)));
-    string s2 = client.SendData("value-2", to_string(analogRead(2)));
+    client.SendData("lift-1-rpm", to_string(random(100,200)));
+    client.SendData("lift-2-rpm", to_string(random(100,200)));
+    client.SendData("lift-3-rpm", to_string(random(100,200)));
 
-    Serial.println("New Values: ");
-    Serial.println(F(s0.c_str()));
-    Serial.println(F(s1.c_str()));
-    Serial.println(F(s2.c_str()));
-    
+    client.SendData("lift-1-balls-in-last-hour", to_string(random(100,200)));
+    client.SendData("lift-2-balls-in-last-hour", to_string(random(100,200)));
+    client.SendData("lift-3-balls-in-last-hour", to_string(random(100,200)));
+
+    client.SendStatus("lift-1-status", random(0,2) == 0 ? "offline" : "online");
+    client.SendStatus("lift-2-status", random(0,2) == 0 ? "offline" : "online");    
+    client.SendStatus("lift-3-status", random(0,2) == 0 ? "offline" : "online");
     
     digitalWrite(LED_BUILTIN, HIGH);  
     delay(100); 

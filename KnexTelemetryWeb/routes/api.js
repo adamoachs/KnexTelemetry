@@ -17,7 +17,7 @@ router.post('/data', function(req, res, next) {
     return;
 
   DataManager.LogData(req.body);
-  res.send(DataManager.Data);
+  res.send({ status: 200 });
 });
 
 /*
@@ -33,7 +33,7 @@ router.post('/status', function(req, res, next) {
     return;
 
   DataManager.SetStatus(req.body);
-  res.send(DataManager.Status);
+  res.send({ status: 200 });
 });
 
 

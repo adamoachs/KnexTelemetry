@@ -1,8 +1,70 @@
+/*
+  COLOR PALETTE: Blues from dark to light:
+
+  Dark blue BG elements
+  #161B33
+
+  Light blue FG elements
+  #474973
+
+  Text elements
+  #A69CAC
+*/
+
 body {
-  padding: 50px;
+  background-color: #161B33;
+  width:100%;
+  margin: 0px;
+  padding: 0px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  text-align: center;
 }
 
 a {
   color: #00B7FF;
+}
+
+span, p, h1 {
+  color: #A69CAC;
+}
+
+.body-content {
+  margin: 0 auto;
+  width: 90vw;
+  height: 90vh;
+}
+
+.lift-status-wrapper 
+{
+  width: 31.3333%;
+  height: 5em;
+  float: left;
+  margin: 1%;
+}
+
+.lift-status {
+  background-color: #474973;
+  border-radius: 10px;
+}
+
+.lift-status-header {
+  text-align: center;
+  padding: 0.1em 0em 0em 0em;
+}
+
+.lift-status-body {
+  text-align: left;
+  padding: 0em 1em 0.1em 1em;
+}
+
+.good-color {
+  color: green;
+}
+
+.warning-color {
+  color: orange;
+}
+
+.error-color {
+  color: red;
 }

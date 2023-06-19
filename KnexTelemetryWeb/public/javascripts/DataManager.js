@@ -32,7 +32,7 @@ class DataManager {
         this.#LogDataDatabase(newData);
     }
 
-    PruneOldData(){
+    PruneOldData() {
         this.#PruneDataLocal();
         this.#PruneDataDatabase();
     }
@@ -40,9 +40,28 @@ class DataManager {
     SetStatus(newStatus) {
         this.Status[newStatus.StatusName] = {
             StatusValue: newStatus.StatusValue, 
-            Timestamp: newStatus.TimeStamp
+            Timestamp: newStatus.Timestamp
         };
         //Not logging status to DB, as we only keep current status and not history
+    }
+
+    //Return the latest entry in Data[dataKey]
+    GetLatestDataByKey(dataKey) {
+        var data = this.Data[dataKey];
+        if(!data)
+            return { DataValue: null };
+
+        data.sort((a, b) => b.Timestamp - a.Timestamp);
+        return data[0];
+    }
+
+    //Returns Data filtered down so each DataKey, instead of pointing to an array, points to a single object containing the most recent data
+    GetLatestData() {
+        //todo
+    }
+
+    GetStatus(statusName) {
+        return this.Status[statusName] ?? { StatusValue: "Unknown" };
     }
 
     #LogDataLocal(newData) {
@@ -72,7 +91,7 @@ class DataManager {
         this.Database.run(sql, params);
     }
 
-    #PruneDataLocal(){
+    #PruneDataLocal() {
         //Prune old data from local cache
         const hours = (process.env.DATALIFETIMEHOURS || 72);
         if(hours == -1)
@@ -93,7 +112,7 @@ class DataManager {
         }
     }
 
-    #PruneDataDatabase(){
+    #PruneDataDatabase() {
         //Prune old data from database
         const hours = (process.env.DATALIFETIMEHOURS || 72);
         if(hours == -1)
