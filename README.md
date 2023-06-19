@@ -60,7 +60,7 @@ Create a `KnexTelemetryClient` object. In the project `setup` method, call KnexT
 ### Sending data to KnexTelemetryWeb
 
 The client supports two methods to send data
-- `SendData` is for metrics to may want to be tracked over time to monitor trends. Data is timestamped and kept for a configurable length of time.
+- `SendData` is for metrics to be tracked over time to monitor trends. Data is timestamped and kept for a configurable length of time.
 - `SendStatus` is for current status only. Data is timestamped to track it's last update, but only the most recent update is stored. 
 
 **string KnexTelemetryClient::SendData(string dataKey, string dataValue)**
@@ -69,7 +69,7 @@ Parameters
 - dataKey: The name of the sensor or calculated variable to update
 - dataValue: The new value
 
-dataKey currently supporting the following values:
+dataKey currently supports the following values:
  - lift-1-rpm
  - lift-2-rpm
  - lift-3-rpm
@@ -88,7 +88,7 @@ Parameters
 - statusName: The name of the status to update
 - statusValue: The new value
 
-dataKey currently supporting the following values:
+statusName currently supports the following values:
  - lift-1-status
  - lift-2-status
  - lift-3-status
