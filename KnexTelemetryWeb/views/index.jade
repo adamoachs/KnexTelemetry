@@ -5,7 +5,7 @@ block content
     div(class='lift-status-wrapper')
       div(class='lift-status')
         div(class='lift-status-header')
-          p Lift #{i}
+          h2 Lift #{i}
         div(class='lift-status-body')
 
           - const status = DataManager.GetStatus(`lift-${i}-status`);
