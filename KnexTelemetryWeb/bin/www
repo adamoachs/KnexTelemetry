@@ -8,6 +8,7 @@ const app = require('../app');
 const debug = require('debug')('knextelemetryweb:server');
 const http = require('http');
 const https = require('https');
+const fs = require('fs');
 const dotenv = require('dotenv');
 dotenv.config({path: 'app.env'});
 
@@ -18,7 +19,7 @@ dotenv.config({path: 'app.env'});
 if(process.env.ENV == 'dev')
   var port = normalizePort(process.env.PORT || '80');
 else
-  var port = 443
+  var port = 443;
 app.set('port', port);
 
 /**
