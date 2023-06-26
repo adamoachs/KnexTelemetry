@@ -7,6 +7,7 @@
 const app = require('../app');
 const debug = require('debug')('knextelemetryweb:server');
 const http = require('http');
+const https = require('https');
 const dotenv = require('dotenv');
 dotenv.config({path: 'app.env'});
 
@@ -14,14 +15,31 @@ dotenv.config({path: 'app.env'});
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '443');
+if(process.env.ENV == 'dev')
+  var port = normalizePort(process.env.PORT || '80');
+else
+  var port = 443
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+if(process.env.ENV == 'dev')
+  var server = http.createServer(app);
+else {
+  const privateKey = fs.readFileSync(`/etc/letsencrypt/live/${process.env.DOMAIN}/privkey.pem`, 'utf8');
+  const certificate = fs.readFileSync(`/etc/letsencrypt/live/${process.env.DOMAIN}/cert.pem1`, 'utf8');
+  const ca = fs.readFileSync(`/etc/letsencrypt/live/${process.env.DOMAIN}/chain.pem`, 'utf8');
+
+  const credentials = {
+    key: privateKey,
+    cert: certificate,
+    ca: ca
+  };
+
+  var server = https.createServer(credentials, app);;
+}
 
 /**
  * Listen on provided port, on all network interfaces.
