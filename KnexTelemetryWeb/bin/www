@@ -21,13 +21,13 @@ if(process.env.ENV == 'dev')
 else
   var port = 443;
 app.set('port', port);
-
+console.log(`Starting on port ${port}`);
 /**
  * Create HTTP server.
  */
 
 if(process.env.ENV == 'dev') {
-  console.log(`Binding http server on port ${port}`);
+  console.log(`Binding http server`);
   const server = http.createServer(app);
 }
 else {
@@ -41,14 +41,14 @@ else {
     ca: ca
   };
 
-  console.log(`Binding https server on port ${port}`);
+  console.log(`Binding https server `);
   const server = https.createServer(credentials, app);;
 }
 
 /**
  * Listen on provided port, on all network interfaces.
  */
-
+console.log(`Binding on port ${port}`);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
