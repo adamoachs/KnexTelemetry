@@ -26,8 +26,10 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-if(process.env.ENV == 'dev')
-  var server = http.createServer(app);
+if(process.env.ENV == 'dev') {
+  console.log(`Binding http server on port ${port}`);
+  const server = http.createServer(app);
+}
 else {
   const privateKey = fs.readFileSync(`/etc/letsencrypt/live/${process.env.DOMAIN}/privkey.pem`, 'utf8');
   const certificate = fs.readFileSync(`/etc/letsencrypt/live/${process.env.DOMAIN}/cert.pem1`, 'utf8');
@@ -39,7 +41,8 @@ else {
     ca: ca
   };
 
-  var server = https.createServer(credentials, app);;
+  console.log(`Binding https server on port ${port}`);
+  const server = https.createServer(credentials, app);;
 }
 
 /**
