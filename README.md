@@ -104,13 +104,16 @@ The `KnexTelemetryClient.ino` file also contains example code
 
 ## KnexTelemetryWeb
 
-(This section still in progress)
 
-### Dependencies
 
-Run `npm install` to download dependencies
+### Set up Nodejs site
+
+Clone repo and `cd` into directory.  
+Run `npm install` to download dependencies.  
 
 	npm install
+	
+	
 	
 ### Config
 

@@ -5,7 +5,7 @@ const DataManager = (require('../public/javascripts/DataManager.js')).GetInstanc
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { 
-    title: 'Express', 
+    title: 'Knex Monitor', 
     DataManager: DataManager
   });
 });
