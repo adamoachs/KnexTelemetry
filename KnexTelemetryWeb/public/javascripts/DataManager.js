@@ -7,7 +7,7 @@ dotenv.config({path: 'app.env'});
 
 class DataManager {
 
-    static dbPath = './knexdata.db';
+    static dbPath = '../knexdata.db';
     static instance;
 
     static GetInstance() {

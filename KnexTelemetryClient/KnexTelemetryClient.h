@@ -28,7 +28,7 @@ class KnexTelemetryClient
     private:
         //private fields
         int _wifiStatus;
-        WiFiClient _wifiClient;
+        WiFiSSLClient _wifiClient;
 
         //private methods
         void WiFiInit();
